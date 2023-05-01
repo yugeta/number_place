@@ -1,7 +1,9 @@
 import { View }   from './view.js'
 import { System } from './system.js'
 
-export const Main = {}
+export const Main = {
+  stage_id : 'NumberPlace',
+}
 
 function init(){
   Main.view   = new View()

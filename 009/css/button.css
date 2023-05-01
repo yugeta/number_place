@@ -1,0 +1,12 @@
+button{
+	margin:8px;
+	font-size:12px;
+	font-weight:bold;
+	cursor:pointer;
+	border:1px solid #CCC;
+	border-radius:4px;
+	padding:8px;
+}
+button:hover{
+	opacity:0.5;
+}
