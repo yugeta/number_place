@@ -3,6 +3,11 @@
   --color-border-1    : black;
   --color-border-2    : #666;
 }
+@media (max-width:500px){
+  #NumberPlace{
+    --size-stage        : calc(100vw - 2px);
+  }
+}
 
 
 html,body{

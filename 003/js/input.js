@@ -15,10 +15,29 @@ export class Input{
     return next_num > 9 ? 0 : next_num
   }
 
+  get interval(){
+    return 10
+  }
+
   set_event(){
-    this.table.addEventListener('mousedown' , this.mousedown.bind(this))
-    this.table.addEventListener('mousemove' , this.mousemove.bind(this))
-    this.table.addEventListener('mouseup'   , this.mouseup.bind(this))
+    if(typeof window.ontouchstart !== 'undefined'){
+      this.table.addEventListener('touchstart' , this.touchstart.bind(this))
+      this.table.addEventListener('touchmove'  , this.touchmove.bind(this))
+      this.table.addEventListener('touchend'   , this.mouseup.bind(this))
+    }
+    else{
+      this.table.addEventListener('mousedown'  , this.mousedown.bind(this))
+      this.table.addEventListener('mousemove'  , this.mousemove.bind(this))
+      this.table.addEventListener('mouseup'    , this.mouseup.bind(this))
+    }
+  }
+
+  touchstart(e){
+    this.mousedown(e.touches[0])
+  }
+  touchmove(e){
+    e.preventDefault()
+    this.mousemove(e.touches[0])
   }
 
   mousedown(e){
@@ -36,6 +55,7 @@ export class Input{
   mousemove(e){
     if(!this.data){return}
     const size = Math.abs(e.pageX - this.data.pos.x)
+    if(size < this.interval){return}
     const num  = this.pos2num(size)
     this.data.cell.textContent = num || ''
     this.data.num = num
@@ -45,17 +65,15 @@ export class Input{
   mouseup(e){
     if(!this.data){return}
     if(!this.data.move_flg){
-      const next_num = this.next_num
-      if(next_num === null){return}
-      this.data.cell.textContent = this.next_num || ''
+      this.data.num = this.next_num
     }
+    this.data.cell.textContent = this.data.num
     delete this.data
   }
 
   // 移動距離を0~9の数値に変換する
   pos2num(pos){
-    const interval = 10
-    const num      = ~~(pos / interval)
+    const num      = ~~(pos / this.interval)
     return num > 9 ? num % 10 : num
   }
 }

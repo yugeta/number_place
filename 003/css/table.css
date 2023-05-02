@@ -19,9 +19,7 @@ td{
 	font-size        : 20px;
 	font-weight      : bold;
 }
-#NumberPlace td:hover{
-	background-color : #DDD;
-}
+
 #NumberPlace tr:nth-child(1){
 	border-top       : 2px solid #000;
 }
@@ -33,4 +31,13 @@ td{
 }
 #NumberPlace td:nth-child(3n){
 	border-right     : 2px solid #000;
+}
+
+@media (hover:hover){
+	#NumberPlace td:hover{
+		background-color : #DDD;
+	}
+}
+@media (hover:none){
+
 }
