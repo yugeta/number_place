@@ -1,16 +1,15 @@
-class View{
-  constructor(){
-    if(!this.target){return}
-    this.set_stage()
-  }
+import { Main }    from '../main.js'
+import { Element } from './element.js'
 
-  get target(){
-    return document.getElementById(Main.stage_id)
+export class View{
+  constructor(){
+    if(!Element.table){return}
+    this.set_stage()
   }
 
   set_stage(){
     const table = document.createElement('table')
-    this.target.appendChild(table)
+    Element.table.appendChild(table)
     this.set_row(table)
   }
   set_row(parent){
@@ -26,23 +25,4 @@ class View{
       parent.appendChild(cell)
     }
   }
-}
-
-const Main = {
-  stage_id : 'NumberPlace',
-}
-
-function init(){
-  Main.view   = new View()
-  Main.system = new System()
-}
-
-switch(document.readyState){
-  case 'complete':
-  case 'interactive':
-    init()
-    break
-  default:
-    window.addEventListener('load' , init)
-    break
 }
