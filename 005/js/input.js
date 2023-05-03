@@ -1,5 +1,6 @@
 import { Main }    from '../main.js'
 import { Element } from './element.js'
+import { Common }  from './common.js'
 
 export class Input{
   constructor(){
@@ -86,8 +87,8 @@ export class Input{
 
       case 'start':
       default:
-        Element.elm_button.setAttribute('data-status' , 'check')
-        Main.question.new(Main.question_num)
+        Common.start()
+        Main.data.save()
         break
     }
   }

@@ -2,7 +2,8 @@ import { Main }    from '../main.js'
 import { Element } from './element.js'
 
 export class Question{
-  constructor(){
+  constructor(options){
+    this.options = options || {}
     this.load()
   }
 
@@ -18,6 +19,7 @@ export class Question{
       || e.target.response) {
         this.datas = JSON.parse(e.target.response)
       }
+      this.finish()
     }).bind(this)
     xhr.send()
   }
@@ -47,4 +49,9 @@ export class Question{
     }
   }
 
+  finish(){
+    if(this.options.callback){
+      this.options.callback()
+    }
+  }
 }
