@@ -1,5 +1,4 @@
 import { Main }    from '../main.js'
-import { Check }   from './check.js'
 import { Element } from './element.js'
 
 export class Input{
@@ -82,7 +81,7 @@ export class Input{
     const status = Element.elm_button.getAttribute('data-status')
     switch(status){
       case 'check':
-        new Check()
+        console.log('check')
         break
 
       case 'start':
