@@ -17,7 +17,7 @@ export class Common{
   }
 
   static continue(){
-    const datas = Main.data.load()
+    const datas = Main.data.load_cache()
     if(!datas){return}
     console.log(datas)
     Main.question_num = datas.question_num
@@ -54,7 +54,8 @@ export class Common{
   }
 
   static get_cell_status(cell , type){
-    if(cell.getAttribute('data-status') === type){
+    if(type === 'all'
+    || cell.getAttribute('data-status') === type){
       return Number(cell.textContent || 0)
     }
     else{

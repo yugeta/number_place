@@ -1,6 +1,7 @@
 import { Main }    from '../main.js'
 import { Element } from './element.js'
 import { Common }  from './common.js'
+import { Check }   from './check.js'
 
 export class Input{
   constructor(){
@@ -69,7 +70,7 @@ export class Input{
     }
     this.data.cell.textContent = this.data.num || ''
     delete this.data
-    Main.data.save()
+    Main.data.save_cache()
   }
 
   // 移動距離を0~9の数値に変換する
@@ -82,13 +83,19 @@ export class Input{
     const status = Element.elm_button.getAttribute('data-status')
     switch(status){
       case 'check':
-        console.log('check')
+        new Check()
         break
+
+      case 'next':
+        Main.question_num++
+        Common.start()
+        Main.data.save_cache()
+        break;
 
       case 'start':
       default:
         Common.start()
-        Main.data.save()
+        Main.data.save_cache()
         break
     }
   }

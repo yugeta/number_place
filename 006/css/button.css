@@ -24,6 +24,9 @@ button#btn[data-status='start']::before{
 button#btn[data-status='check']::before{
   content : 'Check';
 }
+button#btn[data-status='next']::before{
+  content : 'Next';
+}
 
 button#btn[data-status='disabled']{
   pointer-events:none;

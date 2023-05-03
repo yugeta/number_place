@@ -25,4 +25,12 @@ export class View{
       parent.appendChild(cell)
     }
   }
+
+  error(){
+
+  }
+
+  correct(){
+    Element.elm_button.setAttribute('data-status' , 'next')
+  }
 }
