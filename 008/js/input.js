@@ -8,10 +8,18 @@ export class Input{
     this.set_event()
   }
 
-  get next_num(){
+  get_next_num(){
     if(!this.data){return null}
-    const next_num = this.data.num + 1
-    return next_num > 9 ? 0 : next_num
+    // decrement
+    if(this.data.shift_flg){
+      const next_num = this.data.num - 1
+      return next_num < 0 ? 9 : next_num
+    }
+    // increment
+    else{
+      const next_num = this.data.num + 1
+      return next_num > 9 ? 0 : next_num
+    }
   }
 
   set_event(){
@@ -51,6 +59,7 @@ export class Input{
         x : e.pageX,
         y : e.pageY,
       },
+      shift_flg : e.shiftKey,
     }
   }
   mousemove(e){
@@ -66,7 +75,7 @@ export class Input{
   mouseup(e){
     if(!this.data){return}
     if(!this.data.move_flg){
-      this.data.num = this.next_num
+      this.data.num = this.get_next_num()
     }
     this.data.cell.textContent = this.data.num || ''
     delete this.data
