@@ -34,7 +34,7 @@ td{
 }
 
 #NumberPlace td[data-status='lock']{
-	color:#00F;
+	color:#66F;
 }
 
 @media (hover:hover){
