@@ -1,6 +1,7 @@
 import { View }      from './js/view.js'
 import { Input }     from './js/input.js'
 import { Question }  from './js/question.js'
+import { Data }      from './js/data.js'
 
 export const Main = {
   stage_id     : 'NumberPlace',
@@ -12,6 +13,7 @@ export const Main = {
 }
 
 function init(){
+  Main.data     = new Data()
   Main.view     = new View()
   Main.input    = new Input()
   Main.question = new Question()

@@ -1,4 +1,5 @@
 import { Main }    from '../main.js'
+import { Check }   from './check.js'
 import { Element } from './element.js'
 
 export class Input{
@@ -68,6 +69,7 @@ export class Input{
     }
     this.data.cell.textContent = this.data.num || ''
     delete this.data
+    Main.data.save()
   }
 
   // 移動距離を0~9の数値に変換する
@@ -80,6 +82,7 @@ export class Input{
     const status = Element.elm_button.getAttribute('data-status')
     switch(status){
       case 'check':
+        new Check()
         break
 
       case 'start':
