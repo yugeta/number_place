@@ -65,8 +65,12 @@ export class Check{
 
   // 配列内の重複確認
   check_over(arr){
-    const res = arr.filter((a,b,c)=>{return c.indexOf(a) === b && b !== c.lastIndexOf(a)})
+    const res = this.get_over(arr)
     return res.length ? true : false
+  }
+
+  get_over(arr){
+    return arr.filter((a,b,c)=>{return c.indexOf(a) === b && b !== c.lastIndexOf(a)})
   }
 
   // ２重配列の縦横を入れ替える
@@ -74,6 +78,16 @@ export class Check{
     const pivot_datas = []
     for(let i=0; i<datas.length; i++){
       for(let j=0; j<datas[i].length; j++){
+        pivot_datas[j] = pivot_datas[j] || []
+        pivot_datas[j].push(datas[i][j])
+      }
+    }
+    return pivot_datas
+  }
+  convert_pivot_datas_reverse(datas){
+    const pivot_datas = []
+    for(let i=0; i<datas.length; i++){
+      for(let j=datas[i].length-1; j>=0; j--){
         pivot_datas[j] = pivot_datas[j] || []
         pivot_datas[j].push(datas[i][j])
       }
@@ -97,8 +111,61 @@ export class Check{
     return cube_datas
   }
 
+  get_error_matrix(){
+    const error_datas = []
+
+    // vertical-1
+    const vertical_datas = this.convert_pivot_datas(this.datas)
+    const vertical_datas_new = []
+    for(const pivot_data of vertical_datas){
+      const data = pivot_data.map((num , i , arr) => {return arr.indexOf(num) !== arr.lastIndexOf(num) ? 1 : 0})
+      vertical_datas_new.push(data)
+    }
+    const vertical_datas_reverse = this.convert_pivot_datas_reverse(vertical_datas_new)
+
+    // cube-1
+    const cube_datas = this.convert_cube_datas(this.datas)
+    const cube_datas_new = []
+    for(const cube_data of cube_datas){
+      const data = cube_data.map((num , i , arr) => {return arr.indexOf(num) !== arr.lastIndexOf(num) ? 1 : 0})
+      cube_datas_new.push(data)
+    }
+    const cube_datas_reverse = this.convert_cube_datas(cube_datas_new)
+
+    for(let i=0; i<this.datas.length; i++){
+      error_datas[i] = new Array(9).fill(0)
+
+      // empty
+      const empties = this.datas[i].map((num , i , arr) => {return !num ? 1 : 0})
+      error_datas[i] = this.error_overwrite(error_datas[i] , empties)
+
+      // horizon
+      const horizon = this.datas[i].map((num , i , arr) => {return arr.indexOf(num) !== arr.lastIndexOf(num) ? 1 : 0})
+      error_datas[i] = this.error_overwrite(error_datas[i] , horizon)
+
+      // vertical-2
+      error_datas[i] = this.error_overwrite(error_datas[i] , vertical_datas_reverse[i])
+
+      // cube-2
+      error_datas[i] = this.error_overwrite(error_datas[i] , cube_datas_reverse[i])
+    }
+
+    return error_datas
+  }
+
+  error_overwrite(array_base , array_overwrite){
+    for(let i=0; i<array_overwrite.length; i++){
+      if(array_base[i]){continue}
+      if(!array_overwrite[i]){continue}
+      array_base[i] = array_overwrite[i]
+    }
+    return array_base
+  }
+
   fail(){
-    Main.view.error()
+    const error_datas = this.get_error_matrix()
+    console.log(error_datas)
+    Main.view.error(error_datas)
   }
 
   correct(){

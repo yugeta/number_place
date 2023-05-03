@@ -26,22 +26,11 @@ export class Data{
   save_clear(){
     if(!Common.is_started){return}
     const datas = this.load_clear()
-    const save_data = {
+    datas.push({
       question_num : Main.question_num,
       input        : Common.get_matrix_numbers(''),
       question     : Common.get_matrix_numbers('lock'),
-    }
-    const index = datas.findIndex(e => e.question_num === Main.question_num)
-
-    // update
-    if(index === null){
-      datas.push(save_data)
-    }
-    // new
-    else{
-      datas[index] = save_data
-    }
-    
+    })
     const json = JSON.stringify(datas)
     window.localStorage.setItem(Main.clear_name , json)
   }

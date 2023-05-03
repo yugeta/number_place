@@ -19,7 +19,6 @@ export class Common{
   static continue(){
     const datas = Main.data.load()
     if(!datas){return}
-    console.log(datas)
     Main.question_num = datas.question_num
     this.start()
     this.put_number(datas.input)

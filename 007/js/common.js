@@ -37,7 +37,7 @@ export class Common{
     }
   }
 
-  // type : lock or ''
+  // type : all / lock / ''
   static get_matrix_numbers(type=''){
     const tr_lists = Element.tr_lists
     if(!tr_lists || !tr_lists.length){return}
