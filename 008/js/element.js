@@ -12,4 +12,8 @@ export class Element{
   static get elm_button(){
     return document.querySelector('button#btn')
   }
+
+  static get elm_new_button(){
+    return document.querySelector('button#NumberPlace_NewGame')
+  }
 }

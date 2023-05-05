@@ -1,4 +1,5 @@
-button#btn{
+button#btn,
+button#NumberPlace_NewGame{
   width : calc(var(--size-stage) + 2px);
   padding:10px;
   border:2px solid var(--color-border-2);
@@ -8,15 +9,28 @@ button#btn{
   border-radius:4px;
   cursor:pointer;
 }
-button#btn:hover{
+button#btn:hover,
+button#NumberPlace_NewGame:hover{
   background-color:#eee;
 }
-button#btn:active{
+button#btn:active,
+button#NumberPlace_NewGame:active{
   background-color:#fee;
   border-color:#FAA;
   color:#FAA;
 }
-
+button#btn[data-status='start']{
+  border-color:#88f;
+  background-color:#ddf;
+}
+button#btn[data-status='next']{
+  border-color:#f88;
+  background-color:#fdd;
+}
+button#btn[data-status='check']{
+  border-color:#fa8;
+  background-color:#ffd;
+}
 button#btn[data-status='start']::before{
   content : 'Start';
 }
@@ -34,3 +48,14 @@ button#btn[data-status='disabled']{
   color:#ddd;
 }
 
+button#NumberPlace_NewGame{
+  margin-top:5px;
+}
+
+#NumberPlace:has(button#btn[data-status='start']) button#NumberPlace_NewGame{
+  display:none
+}
+
+#NumberPlace[data-status='history-view'] button#btn{
+  display:none;
+}

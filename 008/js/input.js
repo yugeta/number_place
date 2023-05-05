@@ -8,6 +8,10 @@ export class Input{
     this.set_event()
   }
 
+  get is_history_view(){
+    return Element.table.getAttribute('data-status') === 'history-view' ? true : false
+  }
+
   get_next_num(){
     if(!this.data){return null}
     // decrement
@@ -26,6 +30,11 @@ export class Input{
     const btn = Element.elm_button
     if(btn){
       btn.addEventListener('click' , this.click_btn.bind(this))
+    }
+
+    const new_btn = Element.elm_new_button
+    if(new_btn){
+      new_btn.addEventListener('click' , this.click_new_btn.bind(this))
     }
 
     if(typeof window.ontouchstart !== 'undefined'){
@@ -49,6 +58,7 @@ export class Input{
   }
 
   mousedown(e){
+    if(this.is_history_view){return}
     const cell = e.target.closest('#NumberPlace td')
     if(!cell){return}
     if(cell.getAttribute('data-status') === 'lock'){return}
@@ -72,8 +82,10 @@ export class Input{
       this.data.num = num
       this.data.move_flg = true
     }
-    // same-number
-    this.check_same_number(e)
+    else{
+      // same-number
+      this.check_same_number(e)
+    }
   }
 
   mouseup(e){
@@ -82,6 +94,10 @@ export class Input{
       this.data.num = this.get_next_num()
     }
     this.data.cell.textContent = this.data.num || ''
+
+    // same-number
+    this.set_same_number(this.data.num)
+
     delete this.data
     Main.data.save_cache()
   }
@@ -118,6 +134,9 @@ export class Input{
     if(!current_cell || this.current_cell === current_cell){return}
     this.current_cell = current_cell
     const current_num = Number(current_cell.textContent || 0)
+    this.set_same_number(current_num)
+  }
+  set_same_number(current_num){
     const cell_all = document.querySelectorAll('#NumberPlace td')
     for(const cell of cell_all){
       const num = Number(cell.textContent || 0)
@@ -130,6 +149,16 @@ export class Input{
       else if(current_num === num){
         cell.setAttribute('data-same-number' , 1)
       }
+    }
+  }
+
+  click_new_btn(){
+    const new_question_num = Main.history.new_question_num
+    if(new_question_num === null || new_question_num === undefined){return}
+    Main.question_num = new_question_num
+    Main.question.put_numbers(Main.question.datas[new_question_num].data)
+    if(Element.table.hasAttribute('data-status')){
+      Element.table.removeAttribute('data-status')
     }
   }
 }

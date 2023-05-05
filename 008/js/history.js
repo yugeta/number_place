@@ -1,5 +1,6 @@
-import { Main }   from '../main.js'
-import { Common } from './common.js'
+import { Main }    from '../main.js'
+import { Common }  from './common.js'
+import { Element } from './element.js'
 
 export class History{
   constructor(){
@@ -22,6 +23,27 @@ export class History{
     return this.elm ? true : false
   }
 
+  get max_question_num(){
+    const sort_datas = this.datas.sort((a,b)=>{
+      if(a.question_num < b.question_num) return +1
+      if(a.question_num > b.question_num) return -1
+      return 0
+    })
+    if(!sort_datas || !sort_datas.length){return null}
+    return sort_datas[0].question_num
+  }
+  get new_question_num(){
+    const max_question_num = this.max_question_num
+    if(max_question_num === null){return 0}
+    const new_question_num = max_question_num + 1
+    if(Main.question.datas[new_question_num]){
+      return new_question_num
+    }
+    else{
+      return null
+    }
+  }
+
   add_lists(){
     if(!this.is_elm){return}
     for(let i=0; i<this.datas.length; i++){
@@ -41,7 +63,7 @@ export class History{
   }
 
   set_history_value(data){
-    return `num: ${data.question_num} , count: ${data.count||0} <span class='date'>(${data.date||'--'})</span>`
+    return `game: ${data.question_num+1} , <span class='count'>${data.count||0}</span> <span class='date'>(${data.date||'--'})</span>`
   }
 
   click(e){
@@ -53,6 +75,8 @@ export class History{
     const data = this.datas.find((e,i) => i === num)
     Main.question.put_numbers(data.question)
     Common.put_number(data.input)
+    Main.question_num = data.question_num
+    Element.table.setAttribute('data-status' , 'history-view')
   }
 
   set_status_all(value){

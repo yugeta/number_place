@@ -171,5 +171,6 @@ export class Check{
   correct(){
     Main.data.save_clear()
     Main.view.correct()
+    Main.history.add_list(Main.question_num)
   }
 }

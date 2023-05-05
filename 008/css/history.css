@@ -11,3 +11,13 @@
 #NumberPlaceHistory > * .date{
   font-size:0.8em;
 }
+
+#NumberPlaceHistory > * .count{
+  font-size:0.8em;
+}
+#NumberPlaceHistory > * .count::before{
+  content:'clear';
+}
+#NumberPlaceHistory > * .count::after{
+  content:'回';
+}

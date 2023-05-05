@@ -2,9 +2,6 @@ import { Main }    from '../main.js'
 import { Common }  from './common.js'
 
 export class Data{
-  constructor(){
-    console.log(this.get_current_datetime())
-  }
   save_cache(){
     if(!Common.is_started){return}
     const data = {
