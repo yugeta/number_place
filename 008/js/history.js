@@ -54,9 +54,34 @@ export class History{
   add_list(num){
     const data = this.datas[num]
     if(!this.is_elm || !data){return}
+    
+    // 同じnumデータの検索
+    const elm_same_num = document.querySelector(`#NumberPlaceHistory [data-question-num='${data.question_num}']`)
+    if(elm_same_num){
+      this.edit_list(num , data , elm_same_num)
+    }
+    else{
+      this.append_list(num , data)
+    }
+  }
+
+  edit_list(num , data , elm){
+    const elm_count = elm.querySelector('.count')
+    if(elm_count){
+      const count = Number(elm_count.textContent) || 0
+      elm_count.textContent = count + 1
+    }
+    const elm_date = elm.querySelector('.date')
+    if(elm_date){
+      elm_date.textContent = data.date || '--'
+    }
+    elm.setAttribute('data-num' , num)
+  }
+  append_list(num , data){
     const div = document.createElement('div')
     div.classList.add('item')
-    div.setAttribute('num' , num)
+    div.setAttribute('data-num' , num)
+    div.setAttribute('data-question-num' , data.question_num)
     div.innerHTML = this.set_history_value(data)
     this.elm.appendChild(div)
     div.addEventListener('click' , this.click.bind(this))
@@ -71,8 +96,10 @@ export class History{
     if(!item){return}
     this.set_status_all(null)
     this.set_status(item , 'active')
-    const num  = Number(item.getAttribute('num'))
-    const data = this.datas.find((e,i) => i === num)
+    const num  = Number(item.getAttribute('data-num'))
+    // const data = this.question.get_question_data(num)
+    const data = this.datas[num] || {}
+    console.log(data)
     Main.question.put_numbers(data.question)
     Common.put_number(data.input)
     Main.question_num = data.question_num
