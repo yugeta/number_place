@@ -49,7 +49,7 @@ export class Input{
   }
 
   mousedown(e){
-    const cell = e.target.closest('td')
+    const cell = e.target.closest('#NumberPlace td')
     if(!cell){return}
     if(cell.getAttribute('data-status') === 'lock'){return}
     this.data = {
@@ -63,13 +63,17 @@ export class Input{
     }
   }
   mousemove(e){
-    if(!this.data){return}
-    const size = Math.abs(e.pageX - this.data.pos.x)
-    if(size < Main.interval_px){return}
-    const num  = this.pos2num(size)
-    this.data.cell.textContent = num || ''
-    this.data.num = num
-    this.data.move_flg = true
+    // number-input
+    if(this.data){
+      const size = Math.abs(e.pageX - this.data.pos.x)
+      if(size < Main.interval_px){return}
+      const num  = this.pos2num(size)
+      this.data.cell.textContent = num || ''
+      this.data.num = num
+      this.data.move_flg = true
+    }
+    // same-number
+    this.check_same_number(e)
   }
 
   mouseup(e){
@@ -106,6 +110,26 @@ export class Input{
         Common.start()
         Main.data.save_cache()
         break
+    }
+  }
+
+  check_same_number(e){
+    const current_cell = e.target.closest('#NumberPlace td')
+    if(!current_cell || this.current_cell === current_cell){return}
+    this.current_cell = current_cell
+    const current_num = Number(current_cell.textContent || 0)
+    const cell_all = document.querySelectorAll('#NumberPlace td')
+    for(const cell of cell_all){
+      const num = Number(cell.textContent || 0)
+      if(!current_num
+      || current_num !== num){
+        if(cell.hasAttribute('data-same-number')){
+          cell.removeAttribute('data-same-number')
+        }
+      }
+      else if(current_num === num){
+        cell.setAttribute('data-same-number' , 1)
+      }
     }
   }
 }
