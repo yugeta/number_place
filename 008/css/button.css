@@ -1,9 +1,18 @@
+#NumberPlace .buttons{
+  width : calc(var(--size-stage) + 2px);
+  /* height:40px; */
+  display:flex;
+  gap:5px;
+}
+
 button#btn,
 button#NumberPlace_NewGame{
-  width : calc(var(--size-stage) + 2px);
+  width:100%;
+  height:100%;
   padding:10px;
   border:2px solid var(--color-border-2);
   display:block;
+  margin:0;
   margin-bottom:5px;
   background-color:#ddd;
   border-radius:4px;
@@ -46,10 +55,6 @@ button#btn[data-status='disabled']{
   pointer-events:none;
   background-color:#bbb;
   color:#ddd;
-}
-
-button#NumberPlace_NewGame{
-  margin-top:5px;
 }
 
 #NumberPlace:has(button#btn[data-status='start']) button#NumberPlace_NewGame{
