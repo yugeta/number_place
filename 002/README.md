@@ -1,4 +1,4 @@
-table表示
+Javascriptと構造化
 ===
 ```
 Create : 2023.04.30
