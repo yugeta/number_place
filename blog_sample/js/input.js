@@ -54,13 +54,18 @@ export class Input{
     }
   }
   mousemove(e){
-    if(!this.data){return}
-    const size = Math.abs(e.pageX - this.data.pos.x)
-    if(size < Main.interval_px){return}
-    const num  = this.pos2num(size)
-    this.data.cell.textContent = num || ''
-    this.data.num = num
-    this.data.move_flg = true
+    if(this.data){
+      const size = Math.abs(e.pageX - this.data.pos.x)
+      if(size < Main.interval_px){return}
+      const num  = this.pos2num(size)
+      this.data.cell.textContent = num || ''
+      this.data.num = num
+      this.data.move_flg = true
+    }
+    else{
+      // same-number
+      this.check_same_number(e)
+    }
   }
 
   mouseup(e){
@@ -69,6 +74,10 @@ export class Input{
       this.data.num = this.next_num
     }
     this.data.cell.textContent = this.data.num || ''
+
+    // same-number
+    this.set_same_number(0)
+    
     delete this.data
     Main.data.save_cache()
   }
@@ -97,6 +106,34 @@ export class Input{
         Common.start()
         Main.data.save_cache()
         break
+    }
+  }
+
+  check_same_number(e){
+    const current_cell = e.target.closest('#NumberPlace td')
+    if(current_cell && this.current_cell !== current_cell){
+      this.current_cell = current_cell
+      const current_num = Number(current_cell.textContent || 0)
+      this.set_same_number(current_num)
+    }
+    else if(!current_cell && this.current_cell){
+      this.set_same_number()
+      delete this.current_cell
+    }
+  }
+  set_same_number(current_num){
+    const cell_all = document.querySelectorAll('#NumberPlace td')
+    for(const cell of cell_all){
+      const num = Number(cell.textContent || 0)
+      if(!current_num
+      || current_num !== num){
+        if(cell.hasAttribute('data-same-number')){
+          cell.removeAttribute('data-same-number')
+        }
+      }
+      else if(current_num === num){
+        cell.setAttribute('data-same-number' , 1)
+      }
     }
   }
 }

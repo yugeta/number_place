@@ -49,3 +49,7 @@ td{
 #NumberPlace td[data-error='1']{
 	background-color:#FDD;
 }
+
+#NumberPlace td[data-same-number='1']{
+	color:red;
+}
