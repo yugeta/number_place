@@ -131,17 +131,21 @@ export class Input{
 
   check_same_number(e){
     const current_cell = e.target.closest('#NumberPlace td')
-    if(!current_cell || this.current_cell === current_cell){return}
-    this.current_cell = current_cell
-    const current_num = Number(current_cell.textContent || 0)
-    this.set_same_number(current_num)
+    if(current_cell && this.current_cell !== current_cell){
+      this.current_cell = current_cell
+      const current_num = Number(current_cell.textContent || 0)
+      this.set_same_number(current_num)
+    }
+    else if(!current_cell && this.current_cell){
+      this.set_same_number()
+      delete this.current_cell
+    }
   }
   set_same_number(current_num){
     const cell_all = document.querySelectorAll('#NumberPlace td')
     for(const cell of cell_all){
       const num = Number(cell.textContent || 0)
-      if(!current_num
-      || current_num !== num){
+      if(!current_num || current_num !== num){
         if(cell.hasAttribute('data-same-number')){
           cell.removeAttribute('data-same-number')
         }

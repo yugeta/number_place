@@ -3,6 +3,7 @@ import { Input }     from './js/input.js'
 import { Question }  from './js/question.js'
 import { Data }      from './js/data.js'
 import { Common }    from './js/common.js'
+import { History }   from './js/history.js'
 
 export const Main = {
   stage_id     : 'NumberPlace',
@@ -15,6 +16,7 @@ export const Main = {
 
 function init(){
   Main.data     = new Data()
+  Main.history  = new History()
   Main.view     = new View()
   Main.input    = new Input()
   Main.question = new Question({

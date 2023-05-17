@@ -8,16 +8,33 @@ export class Input{
     this.set_event()
   }
 
-  get next_num(){
+  get is_history_view(){
+    return Element.table.getAttribute('data-status') === 'history-view' ? true : false
+  }
+
+  get_next_num(){
     if(!this.data){return null}
-    const next_num = this.data.num + 1
-    return next_num > 9 ? 0 : next_num
+    // decrement
+    if(this.data.shift_flg){
+      const next_num = this.data.num - 1
+      return next_num < 0 ? 9 : next_num
+    }
+    // increment
+    else{
+      const next_num = this.data.num + 1
+      return next_num > 9 ? 0 : next_num
+    }
   }
 
   set_event(){
     const btn = Element.elm_button
     if(btn){
       btn.addEventListener('click' , this.click_btn.bind(this))
+    }
+
+    const new_btn = Element.elm_new_button
+    if(new_btn){
+      new_btn.addEventListener('click' , this.click_new_btn.bind(this))
     }
 
     if(typeof window.ontouchstart !== 'undefined'){
@@ -41,7 +58,8 @@ export class Input{
   }
 
   mousedown(e){
-    const cell = e.target.closest('td')
+    if(this.is_history_view){return}
+    const cell = e.target.closest('#NumberPlace td')
     if(!cell){return}
     if(cell.getAttribute('data-status') === 'lock'){return}
     this.data = {
@@ -51,9 +69,11 @@ export class Input{
         x : e.pageX,
         y : e.pageY,
       },
+      shift_flg : e.shiftKey,
     }
   }
   mousemove(e){
+    // number-input
     if(this.data){
       const size = Math.abs(e.pageX - this.data.pos.x)
       if(size < Main.interval_px){return}
@@ -71,13 +91,13 @@ export class Input{
   mouseup(e){
     if(!this.data){return}
     if(!this.data.move_flg){
-      this.data.num = this.next_num
+      this.data.num = this.get_next_num()
     }
     this.data.cell.textContent = this.data.num || ''
 
     // same-number
-    this.set_same_number(0)
-    
+    this.set_same_number(this.data.num)
+
     delete this.data
     Main.data.save_cache()
   }
@@ -92,7 +112,7 @@ export class Input{
     const status = Element.elm_button.getAttribute('data-status')
     switch(status){
       case 'check':
-        new Check()
+        Main.check = new Check()
         break
 
       case 'next':
@@ -125,8 +145,7 @@ export class Input{
     const cell_all = document.querySelectorAll('#NumberPlace td')
     for(const cell of cell_all){
       const num = Number(cell.textContent || 0)
-      if(!current_num
-      || current_num !== num){
+      if(!current_num || current_num !== num){
         if(cell.hasAttribute('data-same-number')){
           cell.removeAttribute('data-same-number')
         }
@@ -134,6 +153,16 @@ export class Input{
       else if(current_num === num){
         cell.setAttribute('data-same-number' , 1)
       }
+    }
+  }
+
+  click_new_btn(){
+    const new_question_num = Main.history.new_question_num
+    if(new_question_num === null || new_question_num === undefined){return}
+    Main.question_num = new_question_num
+    Main.question.put_numbers(Main.question.datas[new_question_num].data)
+    if(Element.table.hasAttribute('data-status')){
+      Element.table.removeAttribute('data-status')
     }
   }
 }

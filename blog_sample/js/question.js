@@ -7,6 +7,11 @@ export class Question{
     this.load()
   }
 
+  get_question_data(num){
+    if(!this.datas || !this.datas.length){return null}
+    return this.datas[num]
+  }
+
   load(){
     const xhr = new XMLHttpRequest()
     xhr.open('get' , Main.data_path , true)

@@ -1,5 +1,4 @@
 import { Main }    from '../main.js'
-import { Element } from './element.js'
 import { Common }  from './common.js'
 
 export class Check{
@@ -164,7 +163,6 @@ export class Check{
 
   fail(){
     const error_datas = this.get_error_matrix()
-    console.log(error_datas)
     Main.view.error(error_datas)
   }
 
